@@ -1,15 +1,2 @@
-# Custom Newman image for the CI pipeline.
-#
-# The official postman/newman image ships Newman + Node, but NOT the
-# htmlextra reporter (it is an external reporter). We layer it on top so the
-# pipeline can emit a rich HTML report alongside the JUnit XML that Jenkins
-# consumes natively.
-#
-# Pinned to the 6-alpine tag for small size and reproducible CI runs.
 FROM postman/newman:6-alpine
-
-# Install the HTML Extra reporter globally so `-r htmlextra` is available.
 RUN npm install -g newman-reporter-htmlextra
-
-# The base image already sets ENTRYPOINT ["newman"], so downstream `docker run`
-# / Jenkins `args` only need to pass `run <collection> ...`.
