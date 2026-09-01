@@ -1,0 +1,24 @@
+{
+  "name": "reqres-api-automation",
+  "version": "1.0.0",
+  "description": "API test automation suite for the ReqRes demo API, executed with Postman/Newman and wired into a Jenkins CI pipeline.",
+  "scripts": {
+    "test": "newman run collections/reqres-api-tests.postman_collection.json -e environments/reqres.postman_environment.json",
+    "test:ci": "newman run collections/reqres-api-tests.postman_collection.json -e environments/reqres.postman_environment.json -r cli,junit,htmlextra --reporter-junit-export newman-reports/junit-report.xml --reporter-htmlextra-export newman-reports/report.html",
+    "test:html": "newman run collections/reqres-api-tests.postman_collection.json -e environments/reqres.postman_environment.json -r htmlextra --reporter-htmlextra-export newman-reports/report.html"
+  },
+  "keywords": [
+    "api-testing",
+    "postman",
+    "newman",
+    "automation",
+    "sdet",
+    "ci-cd"
+  ],
+  "author": "Dejan Dvorzak",
+  "license": "MIT",
+  "devDependencies": {
+    "newman": "^6.2.2",
+    "newman-reporter-htmlextra": "^1.23.1"
+  }
+}

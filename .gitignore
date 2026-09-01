@@ -1,0 +1,15 @@
+# Newman / test output
+newman-reports/
+newman/
+
+# Node
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
