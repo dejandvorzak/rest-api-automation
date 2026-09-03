@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  newman:
+    name: Newman API Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Newman and reporters
+        run: npm ci
+
+      - name: Create reports directory
+        run: mkdir -p newman-reports
+
+      - name: Run Newman tests
+        env:
+          REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
+        run: |
+          newman run collections/reqres-api-tests.postman_collection.json \
+            -e environments/reqres.postman_environment.json \
+            --env-var "apiKey=$REQRES_API_KEY" \
+            -r cli,junit,htmlextra \
+            --reporter-junit-export newman-reports/junit-report.xml \
+            --reporter-htmlextra-export newman-reports/report.html
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-html-report
+          path: newman-reports/report.html
+          retention-days: 30
+
+      - name: Upload JUnit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-junit-report
+          path: newman-reports/junit-report.xml
+          retention-days: 30
+
+      - name: Publish test results
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: newman-reports/junit-report.xml
+          check_name: Newman Test Results
