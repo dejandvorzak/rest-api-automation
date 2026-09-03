@@ -201,17 +201,19 @@
             {
               "listen": "test",
               "script": {
-                "type": "text/javascript",
                 "exec": [
                   "pm.test('Status code is 200', () => pm.response.to.have.status(200));",
                   "pm.test('Delayed response took at least ~3s', function () {",
-                  "    pm.expect(pm.response.responseTime).to.be.above(2500);",
+                  "    pm.expect(pm.response.responseTime).to.be.within(2500, 6000);",
                   "});",
                   "const body = pm.response.json();",
                   "pm.test('data array is present after delay', function () {",
                   "    pm.expect(body.data).to.be.an('array');",
                   "});"
-                ]
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
             }
           ],
