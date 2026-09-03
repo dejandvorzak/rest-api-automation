@@ -1,4 +1,4 @@
-# ReqRes API — Automation Suite
+# rest-api-automation
 
 REST API test automation for the public [ReqRes](https://reqres.in) demo API, built with **Postman / Newman** and wired into a **Jenkins CI pipeline** running Newman inside a custom Docker image.
 
